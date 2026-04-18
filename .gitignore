@@ -1,0 +1,45 @@
+# Ignore everything by default
+/*
+
+# Track specific directories
+!.gitignore
+!001_snappyMultiRegionHeater/
+!002_Uthermal/
+!003_heatsink/
+
+# 002_Uthermal: only ana001_base and ana001_run
+002_Uthermal/*
+!002_Uthermal/ana001_base/
+!002_Uthermal/ana001_run/
+
+# 003_heatsink: only ana001_base and ana001_chtMultiRegionFoam
+003_heatsink/*
+!003_heatsink/ana001_base/
+!003_heatsink/ana001_chtMultiRegionFoam/
+
+# ========================================
+# Exclude OpenFOAM calculation results
+# ========================================
+
+# Timestep directories (except 0 and 0.orig)
+[1-9]*[0-9]/
+
+# Processor directories (parallel decomposition)
+processor*/
+
+# Post-processing output
+postProcessing/
+
+# Log files
+log.*
+
+# ParaView files
+*.foam
+*.pvsm
+
+# BlockMesh visualization output
+*.vtp
+*.vtu
+
+# Runtime generated code
+dynamicCode/

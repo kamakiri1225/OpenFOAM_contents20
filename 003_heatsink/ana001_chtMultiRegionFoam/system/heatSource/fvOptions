@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+heatSource_AbsoluteEnergySource
+{
+    type            scalarSemiImplicitSource;
+    active          true;
+
+    timeStart       0;
+    duration        10;
+    
+    selectionMode   all;
+    volumeMode      absolute;
+
+    sources
+    {
+        h           ( 100 0 );
+    }
+}
+
+
+// ************************************************************************* //

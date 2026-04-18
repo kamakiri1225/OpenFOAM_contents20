@@ -1,0 +1,86 @@
+solid heatSource
+ facet normal -1 0 0
+  outer loop
+   vertex 0 0 0.002
+   vertex 0 0 0.004
+   vertex 0 0.04 0.002
+  endloop
+ endfacet
+ facet normal -1 0 0
+  outer loop
+   vertex 0 0.04 0.002
+   vertex 0 0 0.004
+   vertex 0 0.04 0.004
+  endloop
+ endfacet
+ facet normal 1 0 0
+  outer loop
+   vertex 0.042 0 0.004
+   vertex 0.042 0 0.002
+   vertex 0.042 0.04 0.002
+  endloop
+ endfacet
+ facet normal 1 -0 0
+  outer loop
+   vertex 0.042 0 0.004
+   vertex 0.042 0.04 0.002
+   vertex 0.042 0.04 0.004
+  endloop
+ endfacet
+ facet normal 0 -1 0
+  outer loop
+   vertex 0.042 0 0.002
+   vertex 0.042 0 0.004
+   vertex 0 0 0.002
+  endloop
+ endfacet
+ facet normal 0 -1 0
+  outer loop
+   vertex 0 0 0.002
+   vertex 0.042 0 0.004
+   vertex 0 0 0.004
+  endloop
+ endfacet
+ facet normal 0 1 0
+  outer loop
+   vertex 0.042 0.04 0.004
+   vertex 0.042 0.04 0.002
+   vertex 0 0.04 0.002
+  endloop
+ endfacet
+ facet normal 0 1 0
+  outer loop
+   vertex 0.042 0.04 0.004
+   vertex 0 0.04 0.002
+   vertex 0 0.04 0.004
+  endloop
+ endfacet
+ facet normal 0 0 -1
+  outer loop
+   vertex 0 0.04 0.002
+   vertex 0.042 0.04 0.002
+   vertex 0 0 0.002
+  endloop
+ endfacet
+ facet normal 0 0 -1
+  outer loop
+   vertex 0 0 0.002
+   vertex 0.042 0.04 0.002
+   vertex 0.042 0 0.002
+  endloop
+ endfacet
+ facet normal 0 0 1
+  outer loop
+   vertex 0.042 0.04 0.004
+   vertex 0 0.04 0.004
+   vertex 0 0 0.004
+  endloop
+ endfacet
+ facet normal 0 0 1
+  outer loop
+   vertex 0.042 0.04 0.004
+   vertex 0 0 0.004
+   vertex 0.042 0 0.004
+  endloop
+ endfacet
+endsolid heatSource

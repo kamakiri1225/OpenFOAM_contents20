@@ -1,0 +1,16 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+for region in $(foamListRegions)
+do
+    decomposePar -region $region
+done
+
+for region in $(foamListRegions)
+do
+    runParallel $decompDict -s "$region" changeDictionary -region $region
+done
+
+#------------------------------------------------------------------------------

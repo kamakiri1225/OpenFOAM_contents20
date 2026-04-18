@@ -1,0 +1,217 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+application     chtMultiRegionSimpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         2000;
+
+deltaT          1;
+
+writeControl    timeStep;
+
+writeInterval    100;
+
+purgeWrite      10;
+
+writeFormat     ascii;
+
+writePrecision  7;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions
+{
+  continuityError1
+  {
+    type continuityError;
+    libs
+      (
+        fieldFunctionObjects
+      ); 	// Mandatory entries (unmodifiable)// Optional entries (runtime modifiable)
+    phi phi; 	// Optional (inherited) entries
+    writePrecision 8;
+    writeToFile yes;
+    useUserTime yes;
+    region region0;
+    enabled yes;
+    log yes;
+    timeStart 0;
+    timeEnd 8000;
+    executeControl timeStep;
+    executeInterval 1;
+    writeControl timeStep;
+    writeInterval 1;
+  }
+  residuals
+  {
+    type solverInfo;
+    libs
+      (
+        "libutilityFunctionObjects.so"
+      );
+    fields
+      (
+        ".*"
+      );
+  }
+  fieldMinMax1
+  {
+    type fieldMinMax;
+    libs
+      (
+        fieldFunctionObjects
+      ); 	// Mandatory entries (unmodifiable)// Mandatory entries (runtime modifiable)
+    mode magnitude;
+    fields
+      (
+        U
+        p
+        T
+      ); 	// Optional entries (runtime modifiable)
+    location yes;
+    writePrecision 8;
+    writeToFile yes;
+    useUserTime yes;
+    region air;
+    enabled yes;
+    log yes;
+    timeStart 0;
+    timeEnd 8000;
+    executeControl timeStep;
+    executeInterval 1;
+    writeControl timeStep;
+    writeInterval 1;
+  }
+  yPlus1
+  {
+    type yPlus;
+    libs
+      (
+        fieldFunctionObjects
+      ); 	// Mandatory entries (unmodifiable)// Optional (inherited) entries
+    writePrecision 8;
+    writeToFile yes;
+    useUserTime yes;
+    region region0;
+    enabled yes;
+    log yes;
+    timeStart 0;
+    timeEnd 8000;
+    executeControl timeStep;
+    executeInterval 1;
+    writeControl timeStep;
+    writeInterval 100;
+  }
+  YMin
+  {
+    type surfaceFieldValue;
+    libs
+      (
+        "libfieldFunctionObjects.so"
+      );
+    writeControl timeStep;
+    log yes;
+    writeFields no;
+    regionType patch;
+    name ZMax;
+    operation sum;
+    fields
+      (
+        phi
+      ); 	// Optional (inherited) entries
+    writePrecision 8;
+    writeToFile yes;
+    useUserTime yes;
+    region air;
+    enabled yes;
+    timeStart 0;
+    timeEnd 8000;
+    executeControl timeStep;
+    executeInterval 1;
+    writeInterval 100;
+  }
+  YMax
+  {
+    $YMin;
+    name YMax;
+  }
+  //https://doc.openfoam.com/2306/tools/post-processing/function-objects/field/wallHeatFlux/
+  wallHeatFlux1
+  {
+      // Mandatory entries (unmodifiable)
+      type            wallHeatFlux;
+      libs            (fieldFunctionObjects);
+  
+      // Optional entries (runtime modifiable)
+      //patches     (<patch1> ... <patchN>); // (wall1 "(wall2|wall3)");
+      //qr          qr;
+  
+      // Optional (inherited) entries
+      // writePrecision  8;
+      // writeToFile     true;
+      // useUserTime     true;
+      region          heatshink;
+      // enabled         true;
+      // log             true;
+      // timeStart       0;
+      // timeEnd         8000;
+      executeControl  timeStep;
+      executeInterval 1;
+      writeControl    writeTime;//timeStep;
+      writeInterval   1;
+  }
+  //https://doc.openfoam.com/2306/tools/post-processing/function-objects/field/heatTransferCoeff/
+  heatTransferCoeff1
+  {
+      // Mandatory entries (unmodifiable)
+      type            heatTransferCoeff;
+      libs            (fieldFunctionObjects);//(fieldFunctionObjects);
+      field           T;//<field>;
+      // patches ("([a-zA-Z]+-(left|right)-[0-9]+)");//(<patch1> <patch2> ... <patchN>);
+      patches (heatshink air_to_heatshink);//(<patch1> <patch2> ... <patchN>);
+      htcModel        fixedReferenceTemperature;//<htcModel>;
+      TRef            293.15;
+      // UInf            (20 0 0);
+      // Cp              CpInf;
+      // CpInf           4000;
+      // rho             rhoInf;
+      // rhoInf          1.2;
+ 
+      // Optional (inherited) entries
+      // result          <fieldResult>;
+      region          heatshink;
+      // enabled         true;
+      // log             true;
+      // timeStart       0;
+      // timeEnd         8000;
+      executeControl  timeStep;
+      executeInterval 1;
+      writeControl    writeTime;;//timeStep;
+      writeInterval   1;
+  }
+}
+// ************************************************************************* //

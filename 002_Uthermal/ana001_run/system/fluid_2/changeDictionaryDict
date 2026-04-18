@@ -1,0 +1,233 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2506                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+k
+{
+    internalField   uniform 0.00375;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    kqRWallFunction;
+            value   $internalField;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+omega
+{
+    internalField   uniform 5.6;////I=0.05,k=3/2(IU)^2, omega=k^0.5/(Cnu^0.25*L),L=20
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    omegaWallFunction;
+            value   $internalField;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+nut
+{
+    internalField   uniform 6000;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    nutkWallFunction;
+            value   uniform 0;
+        }
+
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+U
+{
+    internalField   uniform ( 0 0 0 );
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    fixedValue;
+            value   uniform (0 0 0);
+        }
+
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+T
+{
+    internalField   uniform 293.15;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    fixedValue;
+            value   uniform 293.15;
+        }
+
+        defaultFaces
+        {
+            type            empty;
+        }
+
+        ".*_to_.*"
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            value           uniform 293.15;
+            Tnbr            T;
+            kappaMethod     fluidThermo;
+            qrNbr           none;
+            qr              none;//qr;
+            thermalInertia  true;
+            kappa           none;
+        }
+    }
+}
+
+p_rgh
+{
+    internalField   uniform 100000;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type        fixedFluxPressure;
+            value       uniform 100000;
+        }
+
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+p
+{
+    internalField   uniform 100000;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type            calculated;
+            value           uniform 100000;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+alphat
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    compressible::alphatWallFunction;
+            Prt     0.85;
+            value   uniform 0;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+G
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    MarshakRadiation;
+            value   uniform 0;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+qr
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    calculated;
+            value   uniform 0;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+IDefault
+{
+    internalField   uniform 0;
+
+    boundaryField
+    {
+        ".*"
+        {
+            type    greyDiffusiveRadiation;
+            value   uniform 0;
+        }
+        defaultFaces
+        {
+            type            empty;
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -1,0 +1,86 @@
+solid zone0
+ facet normal -1 0 0
+  outer loop
+   vertex -0.009 -0.02 0
+   vertex -0.009 -0.02 0.025
+   vertex -0.009 0.08 0
+  endloop
+ endfacet
+ facet normal -1 0 0
+  outer loop
+   vertex -0.009 0.08 0
+   vertex -0.009 -0.02 0.025
+   vertex -0.009 0.08 0.025
+  endloop
+ endfacet
+ facet normal 1 0 0
+  outer loop
+   vertex 0.051 -0.02 0.025
+   vertex 0.051 -0.02 0
+   vertex 0.051 0.08 0
+  endloop
+ endfacet
+ facet normal 1 -0 0
+  outer loop
+   vertex 0.051 -0.02 0.025
+   vertex 0.051 0.08 0
+   vertex 0.051 0.08 0.025
+  endloop
+ endfacet
+ facet normal 0 -1 0
+  outer loop
+   vertex 0.051 -0.02 0
+   vertex 0.051 -0.02 0.025
+   vertex -0.009 -0.02 0
+  endloop
+ endfacet
+ facet normal 0 -1 0
+  outer loop
+   vertex -0.009 -0.02 0
+   vertex 0.051 -0.02 0.025
+   vertex -0.009 -0.02 0.025
+  endloop
+ endfacet
+ facet normal 0 1 0
+  outer loop
+   vertex 0.051 0.08 0.025
+   vertex 0.051 0.08 0
+   vertex -0.009 0.08 0
+  endloop
+ endfacet
+ facet normal 0 1 0
+  outer loop
+   vertex 0.051 0.08 0.025
+   vertex -0.009 0.08 0
+   vertex -0.009 0.08 0.025
+  endloop
+ endfacet
+ facet normal 0 0 -1
+  outer loop
+   vertex -0.009 0.08 0
+   vertex 0.051 0.08 0
+   vertex -0.009 -0.02 0
+  endloop
+ endfacet
+ facet normal 0 0 -1
+  outer loop
+   vertex -0.009 -0.02 0
+   vertex 0.051 0.08 0
+   vertex 0.051 -0.02 0
+  endloop
+ endfacet
+ facet normal 0 0 1
+  outer loop
+   vertex 0.051 0.08 0.025
+   vertex -0.009 0.08 0.025
+   vertex -0.009 -0.02 0.025
+  endloop
+ endfacet
+ facet normal 0 0 1
+  outer loop
+   vertex 0.051 0.08 0.025
+   vertex -0.009 -0.02 0.025
+   vertex 0.051 -0.02 0.025
+  endloop
+ endfacet
+endsolid zone0

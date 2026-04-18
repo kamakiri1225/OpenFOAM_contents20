@@ -1,0 +1,150 @@
+    interfaceHeatFlow_fluid_1_solid_1
+    {
+        type            coded;
+        libs            ("libutilityFunctionObjects.so");
+        region          fluid_1;
+        name            interfaceHeatFlow_fluid_1_solid_1;
+
+        writeControl    timeStep;
+        writeInterval   1;
+
+        codeInclude
+        #{
+            #include "fvCFD.H"
+            #include "mappedPatchBase.H"
+            #include "/usr/lib/openfoam/openfoam2512/src/thermoTools/lnInclude/turbulentTemperatureRadCoupledMixedFvPatchScalarField.H"
+        #};
+
+        codeExecute
+        #{
+            const fvMesh& mesh = refCast<const fvMesh>(obr_);
+            const word Tname("T");
+            const word patchName("fluid_1_to_solid_1");
+
+            if (!mesh.foundObject<volScalarField>(Tname))
+            {
+                Info<< "Field " << Tname << " not found in region "
+                    << mesh.name() << nl;
+                return true;
+            }
+
+            const label patchi = mesh.boundaryMesh().findPatchID(patchName);
+            if (patchi < 0)
+            {
+                Info<< "Patch " << patchName << " not found in region "
+                    << mesh.name() << nl;
+                return true;
+            }
+
+            const fvPatch& patch = mesh.boundary()[patchi];
+            if (!isA<mappedPatchBase>(patch.patch()))
+            {
+                Info<< patchName << " is not a mapped patch" << nl;
+                return true;
+            }
+
+            const mappedPatchBase& mpp =
+                refCast<const mappedPatchBase>(patch.patch());
+
+            const fvMesh& nbrMesh = refCast<const fvMesh>(mpp.sampleMesh());
+            const label nbrPatchi = mpp.samplePolyPatch().index();
+            const fvPatch& nbrPatch = nbrMesh.boundary()[nbrPatchi];
+
+            if (!nbrMesh.foundObject<volScalarField>(Tname))
+            {
+                Info<< "Field " << Tname << " not found in region "
+                    << nbrMesh.name() << nl;
+                return true;
+            }
+
+            const volScalarField& T = mesh.lookupObject<volScalarField>(Tname);
+            const volScalarField& Tnbr =
+                nbrMesh.lookupObject<volScalarField>(Tname);
+
+            const fvPatchScalarField& Tp = T.boundaryField()[patchi];
+            const fvPatchScalarField& TpNbr = Tnbr.boundaryField()[nbrPatchi];
+
+            if
+            (
+                !isA<compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField>(Tp)
+             || !isA<compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField>(TpNbr)
+            )
+            {
+                Info<< mesh.name() << ':' << patch.name()
+                    << " or " << nbrMesh.name() << ':' << nbrPatch.name()
+                    << " is not turbulentTemperatureRadCoupledMixed" << nl;
+                return true;
+            }
+
+            const compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField& bc =
+                refCast<const compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField>(Tp);
+            const compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField& nbrBc =
+                refCast<const compressible::turbulentTemperatureRadCoupledMixedFvPatchScalarField>(TpNbr);
+
+            const scalarField Tc(bc.patchInternalField());
+            scalarField TcNbr(nbrBc.patchInternalField());
+            mpp.distribute(TcNbr);
+
+            const scalarField KDelta(bc.kappa(bc)*patch.deltaCoeffs());
+            scalarField KDeltaNbr(nbrBc.kappa(nbrBc)*nbrPatch.deltaCoeffs());
+            mpp.distribute(KDeltaNbr);
+
+            const scalarField Tinterface
+            (
+                (KDelta*Tc + KDeltaNbr*TcNbr)
+               /(KDelta + KDeltaNbr + ROOTVSMALL)
+            );
+
+            const scalarField qLocalToNbr(KDelta*(Tc - Tinterface));
+            const scalarField qNbrToLocal(KDeltaNbr*(TcNbr - Tinterface));
+            const scalarField magSf(patch.magSf());
+
+            const scalar area = gSum(magSf);
+            const scalar QLocal = gSum(qLocalToNbr*magSf);
+            const scalar QNbr = gSum(qNbrToLocal*magSf);
+            const scalar qAvgLocal = QLocal/max(area, SMALL);
+            const scalar qAvgNbr = QNbr/max(area, SMALL);
+            const scalar balance = QLocal + QNbr;
+            const scalar t = mesh.time().value();
+
+            Info<< "interfaceHeatFlow " << mesh.name() << ':' << patch.name()
+                << " <-> " << nbrMesh.name() << ':' << nbrPatch.name()
+                << " : time=" << t
+                << " Q_local[W]=" << QLocal
+                << " Q_nbr[W]=" << QNbr
+                << " balance[W]=" << balance
+                << " qAvg_local[W/m2]=" << qAvgLocal
+                << " qAvg_nbr[W/m2]=" << qAvgNbr
+                << " area[m2]=" << area << nl;
+
+            const fileName outDir
+            (
+                mesh.time().globalPath()/"postProcessing"/"interfaceHeatFlow"
+            );
+            mkDir(outDir);
+
+            const fileName outFile(outDir/"interfaceHeatFlow.dat");
+            const bool writeHeader = !isFile(outFile);
+
+            OFstream os
+            (
+                outFile,
+                IOstreamOption(),
+                IOstreamOption::APPEND_APP
+            );
+
+            if (writeHeader)
+            {
+                os  << "# time Q_" << mesh.name() << "_to_" << nbrMesh.name()
+                    << "[W] Q_" << nbrMesh.name() << "_to_" << mesh.name()
+                    << "[W] balance[W] qAvg_" << mesh.name() << "_to_"
+                    << nbrMesh.name() << "[W/m2] qAvg_" << nbrMesh.name()
+                    << "_to_" << mesh.name() << "[W/m2] area[m2]" << nl;
+            }
+
+            os  << t << " " << QLocal << " " << QNbr << " " << balance
+                << " " << qAvgLocal << " " << qAvgNbr << " " << area << nl;
+
+            return true;
+        #};
+    }

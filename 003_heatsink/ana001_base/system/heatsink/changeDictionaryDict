@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+    heatSource
+    {
+        type            wall;
+    }
+    heatshink_to_air
+    {
+        type            mappedWall;
+        sampleMode      nearestPatchFace;
+        sampleRegion    air;
+        samplePatch     air_to_heatshink;
+    }
+}
+
+T
+{
+    internalField   uniform 293.15;
+
+    boundaryField
+    {
+
+        heatSource
+        {
+            type            externalWallHeatFluxTemperature;
+            kappaMethod     solidThermo;
+            mode            power;//flux;
+            Ta              $internalField;
+            Q               uniform 2000;
+            value           $internalField;
+            kappaName       none;  
+            // thicknessLayers ( 1 2 );
+            // kappaLayers     ( 100 200 )
+        }
+        heatsink_to_air
+        {
+            type            compressible::turbulentTemperatureRadCoupledMixed;
+            Tnbr            T;
+            kappaMethod     solidThermo;
+            // thicknessLayers ( 0.001 );
+            // kappaLayers     ( 0.0005 );
+        }
+    }
+}
+
+
+// ************************************************************************* //

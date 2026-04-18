@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volScalarField;
+    location    "0/heatsink";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 293.15;
+
+boundaryField
+{
+    heatSource
+    {
+        type            externalWallHeatFluxTemperature;
+        value           $internalField;
+        kappaMethod     fluidThermo;
+        mode            power;//flux;//
+        Ta              $internalField;
+        // q               uniform 2000;
+        Q               uniform 200;
+        kappaName       none;
+    }
+    heatsink_to_air
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        value           uniform 0;
+        Tnbr            T;
+        kappaMethod     fluidThermo;
+    }
+}
+
+
+// ************************************************************************* //

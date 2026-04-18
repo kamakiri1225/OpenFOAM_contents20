@@ -1,0 +1,96 @@
+solid XMin
+  facet normal -1.000000 0.000000 0.000000
+    outer loop
+      vertex -9.000000 -20.000000 0.000000
+      vertex -9.000000 -20.000000 25.000000
+      vertex -9.000000 80.000000 0.000000
+    endloop
+  endfacet
+  facet normal -1.000000 0.000000 0.000000
+    outer loop
+      vertex -9.000000 80.000000 0.000000
+      vertex -9.000000 -20.000000 25.000000
+      vertex -9.000000 80.000000 25.000000
+    endloop
+  endfacet
+endsolid XMin
+solid XMax
+  facet normal 1.000000 0.000000 0.000000
+    outer loop
+      vertex 51.000000 -20.000000 25.000000
+      vertex 51.000000 -20.000000 0.000000
+      vertex 51.000000 80.000000 0.000000
+    endloop
+  endfacet
+  facet normal 1.000000 -0.000000 0.000000
+    outer loop
+      vertex 51.000000 -20.000000 25.000000
+      vertex 51.000000 80.000000 0.000000
+      vertex 51.000000 80.000000 25.000000
+    endloop
+  endfacet
+endsolid XMax
+solid YMin
+  facet normal 0.000000 -1.000000 0.000000
+    outer loop
+      vertex 51.000000 -20.000000 0.000000
+      vertex 51.000000 -20.000000 25.000000
+      vertex -9.000000 -20.000000 0.000000
+    endloop
+  endfacet
+  facet normal 0.000000 -1.000000 0.000000
+    outer loop
+      vertex -9.000000 -20.000000 0.000000
+      vertex 51.000000 -20.000000 25.000000
+      vertex -9.000000 -20.000000 25.000000
+    endloop
+  endfacet
+endsolid YMin
+solid YMax
+  facet normal 0.000000 1.000000 0.000000
+    outer loop
+      vertex 51.000000 80.000000 25.000000
+      vertex 51.000000 80.000000 0.000000
+      vertex -9.000000 80.000000 0.000000
+    endloop
+  endfacet
+  facet normal 0.000000 1.000000 0.000000
+    outer loop
+      vertex 51.000000 80.000000 25.000000
+      vertex -9.000000 80.000000 0.000000
+      vertex -9.000000 80.000000 25.000000
+    endloop
+  endfacet
+endsolid YMax
+solid ZMin
+  facet normal 0.000000 0.000000 -1.000000
+    outer loop
+      vertex -9.000000 80.000000 0.000000
+      vertex 51.000000 80.000000 0.000000
+      vertex -9.000000 -20.000000 0.000000
+    endloop
+  endfacet
+  facet normal 0.000000 0.000000 -1.000000
+    outer loop
+      vertex -9.000000 -20.000000 0.000000
+      vertex 51.000000 80.000000 0.000000
+      vertex 51.000000 -20.000000 0.000000
+    endloop
+  endfacet
+endsolid ZMin
+solid ZMax
+  facet normal 0.000000 0.000000 1.000000
+    outer loop
+      vertex 51.000000 80.000000 25.000000
+      vertex -9.000000 80.000000 25.000000
+      vertex -9.000000 -20.000000 25.000000
+    endloop
+  endfacet
+  facet normal 0.000000 0.000000 1.000000
+    outer loop
+      vertex 51.000000 80.000000 25.000000
+      vertex -9.000000 -20.000000 25.000000
+      vertex 51.000000 -20.000000 25.000000
+    endloop
+  endfacet
+endsolid ZMax

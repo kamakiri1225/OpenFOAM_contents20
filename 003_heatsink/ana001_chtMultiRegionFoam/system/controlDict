@@ -1,0 +1,151 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     chtMultiRegionFoam;
+
+startFrom       latestTime;
+
+startTime       0.001;
+
+stopAt          endTime;
+
+endTime         60;
+
+deltaT          0.001;
+
+writeControl    adjustable;
+
+writeInterval   2;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  7;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+maxCo           1.0;
+
+maxDi           1.0;
+
+adjustTimeStep  yes;
+
+functions
+{
+    wallHeatFlux_heatSource
+    {
+        type            wallHeatFlux;
+        libs            ("libfieldFunctionObjects.so");
+        region          heatSource;
+        patches         (heatSource_to_heatSink);
+        writeControl    timeStep;
+        writeInterval   1;
+    }
+
+    wallHeatFlux_heatSink
+    {
+        type            wallHeatFlux;
+        libs            ("libfieldFunctionObjects.so");
+        region          heatSink;
+        patches         (heatSink_to_heatSource);
+        writeControl    timeStep;
+        writeInterval   1;
+    }
+
+    qInt_heatSource_to_heatSink
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        region          heatSource;
+        enabled         true;
+        log             true;
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      patch;
+        name            heatSource_to_heatSink;
+
+        operation       areaIntegrate;
+        fields          (wallHeatFlux);
+    }
+
+    qInt_heatSink_to_heatSource
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        region          heatSink;
+        enabled         true;
+        log             true;
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      patch;
+        name            heatSink_to_heatSource;
+
+        operation       areaIntegrate;
+        fields          (wallHeatFlux);
+    }
+
+    Tavg_heatSource_to_heatSink
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        region          heatSource;
+        enabled         true;
+        log             true;
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      patch;
+        name            heatSource_to_heatSink;
+
+        operation       areaAverage;
+        fields          (T);
+    }
+
+    Tavg_heatSink_to_heatSource
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+
+        region          heatSink;
+        enabled         true;
+        log             true;
+        writeControl    timeStep;
+        writeInterval   1;
+        writeFields     false;
+
+        regionType      patch;
+        name            heatSink_to_heatSource;
+
+        operation       areaAverage;
+        fields          (T);
+    }
+}
+// ************************************************************************* //
