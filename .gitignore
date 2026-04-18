@@ -3,6 +3,7 @@
 
 # Track specific directories
 !.gitignore
+!README.md
 !001_snappyMultiRegionHeater/
 !002_Uthermal/
 !003_heatsink/
