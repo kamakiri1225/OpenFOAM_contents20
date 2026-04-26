@@ -25,22 +25,27 @@ boundaryField
     XMin
     {
         type            zeroGradient;
+        value           uniform 300;
     }
     XMax
     {
         type            zeroGradient;
+        value           uniform 300;
     }
     YMin
     {
         type            zeroGradient;
+        value           uniform 300;
     }
     YMax
     {
         type            zeroGradient;
+        value           uniform 300;
     }
     ZMax
     {
         type            zeroGradient;
+        value           uniform 300;
     }
     air_to_basis
     {

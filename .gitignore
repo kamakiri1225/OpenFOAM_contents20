@@ -13,10 +13,11 @@
 !002_Uthermal/ana001_base/
 !002_Uthermal/ana001_run/
 
-# 003_heatsink: only ana001_base and ana001_chtMultiRegionFoam
+# 003_heatsink: only ana001_base, ana001_chtMultiRegionFoam, ana001_chtMultiRegionFoam_Noheatsink
 003_heatsink/*
 !003_heatsink/ana001_base/
 !003_heatsink/ana001_chtMultiRegionFoam/
+!003_heatsink/ana001_chtMultiRegionFoam_Noheatsink/
 
 # ========================================
 # Exclude OpenFOAM calculation results

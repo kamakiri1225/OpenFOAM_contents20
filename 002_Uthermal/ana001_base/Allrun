@@ -1,0 +1,20 @@
+#!/bin/sh
+cd "${0%/*}" || exit 1
+
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions
+
+for region in $(foamListRegions); do
+    [ -d "0/$region" ] && rm -rf "0/$region"
+done
+
+runApplication blockMesh
+runApplication snappyHexMesh -overwrite
+runApplication splitMeshRegions -cellZones -overwrite
+
+for region in $(foamListRegions); do
+    runApplication -s "$region" changeDictionary -region "$region"
+done
+
+runApplication decomposePar -allRegions
+
+runApplication chtMultiRegionFoam

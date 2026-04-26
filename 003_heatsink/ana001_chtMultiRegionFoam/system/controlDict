@@ -52,100 +52,92 @@ adjustTimeStep  yes;
 
 functions
 {
-    wallHeatFlux_heatSource
+    wallHeatFlux_air
     {
         type            wallHeatFlux;
         libs            ("libfieldFunctionObjects.so");
-        region          heatSource;
-        patches         (heatSource_to_heatSink);
-        writeControl    timeStep;
-        writeInterval   1;
+        region          air;
+        patches         (air_to_heatSink);
+        writeControl    writeTime;
     }
 
     wallHeatFlux_heatSink
     {
-        type            wallHeatFlux;
-        libs            ("libfieldFunctionObjects.so");
+        $wallHeatFlux_air
         region          heatSink;
-        patches         (heatSink_to_heatSource);
+        patches         (heatSink_to_air heatSink_to_heatSource);
+    }
+
+    wallHeatFlux_heatSource
+    {
+        $wallHeatFlux_air
+        region          heatSource;
+        patches         (heatSource_to_heatSink);
+    }
+
+    qInt_air_to_heatSink
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        region          air;
+        enabled         true;
+        log             true;
         writeControl    timeStep;
         writeInterval   1;
+        writeFields     false;
+        regionType      patch;
+        name            air_to_heatSink;
+        operation       areaIntegrate;
+        fields          (wallHeatFlux);
+    }
+
+    qInt_heatSink_to_air
+    {
+        $qInt_air_to_heatSink
+        region          heatSink;
+        name            heatSink_to_air;
     }
 
     qInt_heatSource_to_heatSink
     {
-        type            surfaceFieldValue;
-        libs            ("libfieldFunctionObjects.so");
-
+        $qInt_air_to_heatSink
         region          heatSource;
-        enabled         true;
-        log             true;
-        writeControl    timeStep;
-        writeInterval   1;
-        writeFields     false;
-
-        regionType      patch;
         name            heatSource_to_heatSink;
-
-        operation       areaIntegrate;
-        fields          (wallHeatFlux);
     }
 
     qInt_heatSink_to_heatSource
     {
-        type            surfaceFieldValue;
-        libs            ("libfieldFunctionObjects.so");
-
+        $qInt_air_to_heatSink
         region          heatSink;
-        enabled         true;
-        log             true;
-        writeControl    timeStep;
-        writeInterval   1;
-        writeFields     false;
-
-        regionType      patch;
         name            heatSink_to_heatSource;
+    }
 
-        operation       areaIntegrate;
-        fields          (wallHeatFlux);
+    Tavg_air_to_heatSink
+    {
+        $qInt_air_to_heatSink
+        operation       areaAverage;
+        fields          (T);
+    }
+
+    Tavg_heatSink_to_air
+    {
+        $Tavg_air_to_heatSink
+        region          heatSink;
+        name            heatSink_to_air;
     }
 
     Tavg_heatSource_to_heatSink
     {
-        type            surfaceFieldValue;
-        libs            ("libfieldFunctionObjects.so");
-
+        $Tavg_air_to_heatSink
         region          heatSource;
-        enabled         true;
-        log             true;
-        writeControl    timeStep;
-        writeInterval   1;
-        writeFields     false;
-
-        regionType      patch;
         name            heatSource_to_heatSink;
-
-        operation       areaAverage;
-        fields          (T);
     }
 
     Tavg_heatSink_to_heatSource
     {
-        type            surfaceFieldValue;
-        libs            ("libfieldFunctionObjects.so");
-
+        $Tavg_air_to_heatSink
         region          heatSink;
-        enabled         true;
-        log             true;
-        writeControl    timeStep;
-        writeInterval   1;
-        writeFields     false;
-
-        regionType      patch;
         name            heatSink_to_heatSource;
-
-        operation       areaAverage;
-        fields          (T);
     }
 }
 // ************************************************************************* //

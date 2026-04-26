@@ -1,0 +1,74 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2512                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/basis/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+7
+(
+    XMin
+    {
+        type            patch;
+        nFaces          80;
+        startFace       39442;
+    }
+    XMax
+    {
+        type            patch;
+        nFaces          80;
+        startFace       39522;
+    }
+    YMin
+    {
+        type            patch;
+        nFaces          60;
+        startFace       39602;
+    }
+    YMax
+    {
+        type            patch;
+        nFaces          60;
+        startFace       39662;
+    }
+    ZMin
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          9756;
+        startFace       39722;
+    }
+    basis_to_air
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          4166;
+        startFace       49478;
+        sampleMode      nearestPatchFace;
+        sampleRegion    air;
+        samplePatch     air_to_basis;
+    }
+    basis_to_heatSource
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          5590;
+        startFace       53644;
+        sampleMode      nearestPatchFace;
+        sampleRegion    heatSource;
+        samplePatch     heatSource_to_basis;
+    }
+)
+
+// ************************************************************************* //

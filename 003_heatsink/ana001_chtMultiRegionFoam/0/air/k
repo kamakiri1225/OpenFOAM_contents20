@@ -35,8 +35,8 @@ boundaryField
     YMin
     {
         type            inletOutlet;
-        inletValue      uniform 0.00375;
         value           uniform 0.00375;
+        inletValue      uniform 0.00375;
     }
     YMax
     {

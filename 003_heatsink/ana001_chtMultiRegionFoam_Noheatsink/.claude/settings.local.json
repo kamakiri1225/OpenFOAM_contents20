@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc:*)",
+      "Bash(blockMesh:*)",
+      "Bash(snappyHexMesh:*)",
+      "Bash(splitMeshRegions:*)",
+      "Bash(for region in air heatSink heatSource basis)",
+      "Bash(do cp system/decomposeParDict system/$region/)",
+      "Bash(done)"
+    ]
+  }
+}
