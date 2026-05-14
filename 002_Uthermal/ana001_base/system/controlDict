@@ -28,7 +28,7 @@ deltaT          0.001;
 
 writeControl    adjustable;
 
-writeInterval   100;
+writeInterval   50;
 
 purgeWrite      0;
 
@@ -60,7 +60,8 @@ functions
         libs            ("libfieldFunctionObjects.so");
         region          fluid_1;
         patches         (fluid_1_to_solid_1);
-        writeControl    writeTime;      
+        writeControl    adjustableRunTime;
+        writeInterval   50;
     }
 
     wallHeatFlux_solid_1
@@ -75,7 +76,8 @@ functions
         type            surfaceFieldValue;
         libs            ("libfieldFunctionObjects.so");
         region          fluid_1;
-        writeControl    writeTime;   
+        writeControl    adjustableRunTime;
+        writeInterval   50;
         writeFields     false;   // 面上の場を書き出さず、集計値だけ出す
         regionType      patch;
         name            fluid_1_to_solid_1;
@@ -87,7 +89,8 @@ functions
     {
         $qAvg_fluid_1
         region          solid_1;
-        name            solid_1_to_fluid_1;    }
+        name            solid_1_to_fluid_1;
+    }
 
 
     qInt_fluid_1
@@ -95,7 +98,8 @@ functions
         type            surfaceFieldValue;
         libs            ("libfieldFunctionObjects.so");
         region          fluid_1;
-        writeControl    writeTime;   
+        writeControl    adjustableRunTime;
+        writeInterval   50;
         writeFields     false;   // 面上の場を書き出さず、集計値だけ出す
         regionType      patch;
         name            fluid_1_to_solid_1;
@@ -114,7 +118,8 @@ functions
     {
         type                solverInfo;
         libs                ("libutilityFunctionObjects.so");
-        writeControl        writeTime;
+        writeControl        adjustableRunTime;
+        writeInterval       50;
         region              fluid_1;
         fields   ( U h p_rgh );
         writeResidualFields yes;
@@ -128,12 +133,13 @@ functions
     {
         type                solverInfo;
         libs                ("libutilityFunctionObjects.so");
-        writeControl        writeTime;
+        writeControl        adjustableRunTime;
+        writeInterval       50;
         region              solid_1;
         fields   ( h );
         writeResidualFields yes;
     }
-    residuals_solid_2   
+    residuals_solid_2
     {
         $residuals_solid_1
         region              solid_2;
@@ -146,7 +152,8 @@ functions
         fields              ( U T p );
         useUserTime         yes;
         region              fluid_1;
-        writeControl        writeTime;
+        writeControl        adjustableRunTime;
+        writeInterval       50;
     }
     fieldMinMax_fluid_2
     {
@@ -161,7 +168,8 @@ functions
         fields              ( T p );
         useUserTime         yes;
         region              solid_1;
-        writeControl        writeTime;
+        writeControl        adjustableRunTime;
+        writeInterval       50;
     }
     fieldMinMax_solid_2
     {

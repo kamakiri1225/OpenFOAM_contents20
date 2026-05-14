@@ -5,8 +5,8 @@
         region          fluid_1;
         name            interfaceHeatFlow_fluid_1_solid_1;
 
-        writeControl    timeStep;
-        writeInterval   1;
+        writeControl    adjustableRunTime;
+        writeInterval   50;
 
         codeInclude
         #{
