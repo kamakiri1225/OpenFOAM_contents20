@@ -39,39 +39,13 @@ cd 002_Uthermal/ana001_run
 
 #### 温度分布アニメーション
 
-| 温度分布 | 比較（fluid_1 / solid_1 / fluid_2） |
-|:---:|:---:|
-| ![温度分布アニメーション](002_Uthermal/ana001_run/ani/ani.gif) | ![比較アニメーション](002_Uthermal/ana001_run/ani/ani_comp.gif) |
+![比較アニメーション](002_Uthermal/ana001_run/ani/ani_comp.gif)
 
 #### 計算結果
-
-**界面熱流束の時刻歴（全界面まとめ）**
-
-![熱流束履歴](002_Uthermal/ana001_run/png/all_heatflow_histories_one_plot.png)
-
-**界面熱流束（interfaceHeatFlow）**
-
-![interfaceHeatFlow](002_Uthermal/ana001_run/png/interfaceHeatFlow.png)
 
 **面平均熱流束 qAvg（各界面）**
 
 ![qAvg履歴](002_Uthermal/ana001_run/png/qAvg_all_histories.png)
-
-**面積分熱量 qInt（各界面）**
-
-| 通常スケール | 自動スケール |
-|:---:|:---:|
-| ![qInt履歴](002_Uthermal/ana001_run/png/qInt_all_histories.png) | ![qInt自動](002_Uthermal/ana001_run/png/qInt_all_auto.png) |
-
-**残差履歴**
-
-| fluid_1 | fluid_2 |
-|:---:|:---:|
-| ![residual_fluid_1](002_Uthermal/ana001_run/png/residual_fluid_1.png) | ![residual_fluid_2](002_Uthermal/ana001_run/png/residual_fluid_2.png) |
-
-| solid_1 | solid_2 |
-|:---:|:---:|
-| ![residual_solid_1](002_Uthermal/ana001_run/png/residual_solid_1.png) | ![residual_solid_2](002_Uthermal/ana001_run/png/residual_solid_2.png) |
 
 ---
 
@@ -91,33 +65,15 @@ cd 003_heatsink/ana001_chtMultiRegionFoam
 ./Allrun
 ```
 
-#### メッシュ（ParaView 確認）
-
-| snappyHexMesh 結果（全体） | メッシュ断面詳細 |
-|:---:|:---:|
-| ![メッシュ全体](003_heatsink/ana001_chtMultiRegionFoam/doc/1.png) | ![メッシュ断面](003_heatsink/ana001_chtMultiRegionFoam/doc/2.png) |
-
 #### 温度分布アニメーション（ヒートシンクあり）
 
 ![ヒートシンク温度分布](003_heatsink/ana001_chtMultiRegionFoam/ani/ani.gif)
 
 #### 計算結果
 
-**界面平均温度の時刻歴**
-
-| ヒートシンクあり | ヒートシンクなし |
-|:---:|:---:|
-| ![温度履歴（あり）](003_heatsink/ana001_chtMultiRegionFoam/average_interface_temperature_history.png) | ![温度履歴（なし）](003_heatsink/ana001_chtMultiRegionFoam_Noheatsink/average_interface_temperature_history.png) |
-
 **界面平均温度の比較（あり vs なし）**
 
 ![温度比較](003_heatsink/ana001_chtMultiRegionFoam/average_interface_temperature_comparison.png)
-
-**界面熱流量の時刻歴**
-
-| ヒートシンクあり | ヒートシンクなし |
-|:---:|:---:|
-| ![熱流量（あり）](003_heatsink/ana001_chtMultiRegionFoam/heatflow_history_interface.png) | ![熱流量（なし）](003_heatsink/ana001_chtMultiRegionFoam_Noheatsink/heatflow_history_interface.png) |
 
 ---
 
@@ -125,7 +81,7 @@ cd 003_heatsink/ana001_chtMultiRegionFoam
 
 - 計算結果（タイムステップディレクトリ、processor、postProcessing 等）はリポジトリに含まれていません
 - 各自の環境で計算を実行してください
-- 動作確認環境: OpenFOAM v2506（openfoam.com 版）
+- 動作確認環境: OpenFOAM v2512（openfoam.com 版）
 
 ## ライセンス
 
